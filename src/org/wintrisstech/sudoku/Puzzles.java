@@ -19,7 +19,7 @@ public abstract class Puzzles {
 	    {0, 0, 0, 0, 4, 0, 0, 0, 9}};
 
 	/**
-	 * This is the SudokuGUI puzzle in San Diego Union Tribune, April 25, 2009:
+	 * This is the Sudoku puzzle in San Diego Union Tribune, April 25, 2009:
 	 */
 	public final static int[][] PUZZLE_1 = new int[][]{
 	    {5, 0, 0, 0, 3, 0, 0, 9, 0},
@@ -33,7 +33,7 @@ public abstract class Puzzles {
 	    {0, 5, 0, 0, 7, 0, 0, 0, 4}};
 
 	/**
-	 * This is the SudokuGUI puzzle in San Diego Union Tribune, May 2, 2009:
+	 * This is the Sudoku puzzle in San Diego Union Tribune, May 2, 2009:
 	 */
 	public final static int[][] PUZZLE_2 = new int[][]{
 	    {0, 4, 0, 6, 0, 0, 0, 0, 7},
@@ -47,7 +47,7 @@ public abstract class Puzzles {
 	    {4, 0, 0, 0, 0, 8, 0, 7, 0}};
 
 	/**
-	 * This is the SudokuGUI puzzle in San Diego Union Tribune, May 2, 2009:
+	 * This is the Sudoku puzzle in San Diego Union Tribune, May 2, 2009:
 	 */
 	public final static int[][] PUZZLE_3 = new int[][]{
 	    {0, 0, 0, 0, 0, 0, 0, 0, 5},
@@ -59,8 +59,23 @@ public abstract class Puzzles {
 	    {0, 0, 8, 7, 5, 2, 6, 0, 9},
 	    {0, 9, 0, 0, 0, 0, 0, 0, 0},
 	    {1, 0, 0, 0, 0, 0, 0, 0, 0}};
+	/**
+	 * This is the same Sudoku puzzle as PUZZLE_3, except that the first empty 
+	 * space has been filled so it has no solutions:
+	 */
+	public final static int[][] PUZZLE_4 = new int[][]{
+		{1, 0, 0, 0, 0, 0, 0, 0, 5},
+		{0, 0, 0, 0, 0, 0, 0, 8, 0},
+		{6, 0, 5, 3, 1, 4, 7, 0, 0},
+		{0, 0, 0, 6, 0, 0, 0, 3, 4},
+		{4, 2, 0, 0, 9, 0, 0, 0, 0},
+		{0, 0, 7, 5, 4, 0, 1, 0, 0},
+		{0, 0, 8, 7, 5, 2, 6, 0, 9},
+		{0, 9, 0, 0, 0, 0, 0, 0, 0},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0}};
 
-	public static int[][][] ALL_PUZZLES = {PUZZLE_1, PUZZLE_2, PUZZLE_3, PUZZLE_0};
+	public static int[][][] ALL_PUZZLES = 
+		{PUZZLE_1, PUZZLE_2, PUZZLE_3, PUZZLE_4, PUZZLE_0};
 	
     /**
      * Gets a copy of one of the static puzzles defined in this class.

@@ -46,11 +46,10 @@ class Solver implements Runnable {
 	public void run() {
 		long startTime = System.currentTimeMillis();
 		// Initialize the puzzleSpaces array:
-		int k = 0;
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
+		for (int i = 0, k = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++, k++) {
+				assert k == 9 * i + j;
 				puzzleSpaces[k] = i << 4 | j;
-				k++;
 			}
 		}
 		firstEmpty = 0;
@@ -58,20 +57,25 @@ class Solver implements Runnable {
 			firstEmpty++;
 		}
 		// Move all the non-empty spaces to the beginning of puzzleSpaces
-		k = firstEmpty + 1;
 		// Invariant:
 		// 1) For all i, if i < firstEmpty, puzzleSpaces[i] is non-empty.
 		// 2) For all i, if firstEmpty <= i < k, puzzleSpaces[i] is empty.
-		while (k < puzzleSpaces.length) {
+		for (int k = firstEmpty + 1; k < puzzleSpaces.length; k++) {
 			if (!isEmpty(puzzleSpaces[k])) {
 				int tmp = puzzleSpaces[firstEmpty];
 				puzzleSpaces[firstEmpty] = puzzleSpaces[k];
 				puzzleSpaces[k] = tmp;
 				firstEmpty++;
 			}
-			k++;
 		}
-
+		// Shuffle the empty spaces
+		for (int k = firstEmpty; k < puzzleSpaces.length; k++) {
+			int randomIndex = random.nextInt(puzzleSpaces.length - k) + k;
+			int tmp = puzzleSpaces[k];
+			puzzleSpaces[k] = puzzleSpaces[randomIndex];
+			puzzleSpaces[randomIndex] = tmp;
+		}
+		// Get down to work...
 		try {
 			proveImpossible();
 			System.out.println("This puzzle has no solutions.");
@@ -86,6 +90,12 @@ class Solver implements Runnable {
 
 	}
 
+	/**
+	 * Determines if a space is empty.
+	 * 
+	 * @param space an index into the puzzleSpaces array. 
+	 * @return true if the space is empty, i.e., the value is 0.
+	 */
 	private boolean isEmpty(int space) {
 		return puzzle[space >> 4][space & 0xf] == 0;
 	}
@@ -138,25 +148,17 @@ class Solver implements Runnable {
 	 * @throws SudokuException
 	 *             if puzzle has no empty spaces left.
 	 */
-//	private int findEmptySpace() throws SudokuException {
-//		// Simple (silly) implementation, which returns the first empty space.
-//		if (firstEmpty < puzzleSpaces.length) {
-//			return spaces[firstEmpty];
-//		}
-//		throw new SudokuException();
-//	}
+	// private int findEmptySpace() throws SudokuException {
+	// // Simple (silly) implementation, which returns the first empty space.
+	// if (firstEmpty < puzzleSpaces.length) {
+	// return spaces[firstEmpty];
+	// }
+	// throw new SudokuException();
+	// }
 
 	private int findEmptySpace() throws SudokuException {
 		// This implementation returns a space with least possibilities.
 		int minPossibilities = 10;
-		// Shuffle the empty spaces
-		for (int k = firstEmpty; k < puzzleSpaces.length; k++) {
-			int randomIndex = random.nextInt(puzzleSpaces.length - k) + k;
-			int tmp = puzzleSpaces[k];
-			puzzleSpaces[k] = puzzleSpaces[randomIndex];
-			puzzleSpaces[randomIndex] = tmp;
-		}
-
 		// Find a space with minimum number of possibilities
 		int index = -1; // index of the space to return
 		int row, col;
