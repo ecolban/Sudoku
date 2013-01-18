@@ -25,7 +25,7 @@ public class SudokuGUI extends JPanel implements Runnable {
     /**
      * The instance of Solver that is used to solve the Sudoku puzzles
      */
-    private Solver solver = new Solver();
+    private Solver2 solver = new Solver2();
     /**
      * The puzzle passed to the solver. A 0 is used to represent an
      * empty space.

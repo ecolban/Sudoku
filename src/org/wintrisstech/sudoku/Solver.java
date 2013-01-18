@@ -3,6 +3,7 @@ package org.wintrisstech.sudoku;
 import java.util.Random;
 
 /**
+ * A Sudoku puzzle solver based on a recursive search
  * 
  * @author Erik
  */
@@ -23,8 +24,8 @@ class Solver implements Runnable {
 	 * A one-dimensional array of all the index pairs of the spaces in the
 	 * puzzle. The order in which these pairs occur is not significant, and the
 	 * array may be shuffled to randomize the solution process. Each (row, col)
-	 * pair is represented by an int that is such that, when represented in
-	 * hexadecimal, the first digit is the row, and the second digit is the
+	 * pair is represented by an int which, when represented in hexadecimal, has
+	 * two digits where the first digit is the row, and the second digit is the
 	 * column.
 	 */
 	private int[] puzzleSpaces = new int[9 * 9];
@@ -34,7 +35,6 @@ class Solver implements Runnable {
 	private Random random = new Random();
 
 	/**
-	 * 
 	 * Solves a SudokuGUI puzzle.
 	 * <p>
 	 * The strategy is to prove that there is no solution by exhausting all
@@ -58,8 +58,8 @@ class Solver implements Runnable {
 		}
 		// Move all the non-empty spaces to the beginning of puzzleSpaces
 		// Invariant:
-		// 1) For all i, if i < firstEmpty, puzzleSpaces[i] is non-empty.
-		// 2) For all i, if firstEmpty <= i < k, puzzleSpaces[i] is empty.
+		// 1) For all i, if i < firstEmpty, then puzzleSpaces[i] is non-empty.
+		// 2) For all i, if firstEmpty <= i < k, then puzzleSpaces[i] is empty.
 		for (int k = firstEmpty + 1; k < puzzleSpaces.length; k++) {
 			if (!isEmpty(puzzleSpaces[k])) {
 				int tmp = puzzleSpaces[firstEmpty];
@@ -93,7 +93,8 @@ class Solver implements Runnable {
 	/**
 	 * Determines if a space is empty.
 	 * 
-	 * @param space an index into the puzzleSpaces array. 
+	 * @param space
+	 *            an index into the puzzleSpaces array.
 	 * @return true if the space is empty, i.e., the value is 0.
 	 */
 	private boolean isEmpty(int space) {
@@ -117,8 +118,8 @@ class Solver implements Runnable {
 	 *             the variable puzzle contains the solution.
 	 */
 	private void proveImpossible() throws SudokuException {
-		int space = findEmptySpace(); // Throws an exception if no empty spaces
-										// left.
+		int space = findEmptySpace(); // Throws an exception if no empty space
+										// is found.
 		firstEmpty++;
 		int row = space >> 4;
 		int col = space & 0xf;
@@ -130,10 +131,8 @@ class Solver implements Runnable {
 				proveImpossible();
 			}
 		}
-		/*
-		 * Following code line is to ensure that the puzzle is in the same state
-		 * as prior to the invocation of this method.
-		 */
+		// Following code lines are to ensure that the puzzle is in the same
+		// state as prior to the invocation of this method.
 		firstEmpty--;
 		puzzle[row][col] = 0;
 	}
@@ -143,19 +142,19 @@ class Solver implements Runnable {
 	 * <p>
 	 * Post-cond: Variable puzzle in same state as prior to call.
 	 * 
-	 * @return a Point whose coordinates are the row and column of an empty
-	 *         space.
+	 * @return an int representing an empty space in the puzzle
 	 * @throws SudokuException
 	 *             if puzzle has no empty spaces left.
 	 */
-	// private int findEmptySpace() throws SudokuException {
-	// // Simple (silly) implementation, which returns the first empty space.
-	// if (firstEmpty < puzzleSpaces.length) {
-	// return spaces[firstEmpty];
-	// }
-	// throw new SudokuException();
-	// }
-
+	/*
+	private int findEmptySpace() throws SudokuException {
+		// Simple (silly) implementation, which returns the first empty space.
+		if (firstEmpty < puzzleSpaces.length) {
+			return puzzleSpaces[firstEmpty];
+		}
+		throw new SudokuException();
+	}
+	*/
 	private int findEmptySpace() throws SudokuException {
 		// This implementation returns a space with least possibilities.
 		int minPossibilities = 10;
